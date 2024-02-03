@@ -1,0 +1,3 @@
+[submodule "3rdparty/qt-request-builder"]
+	path = 3rdparty/qt-request-builder
+	url = git@github.com:flaviomarcio/qt-request-builder.git

@@ -15,5 +15,4 @@ public:
     explicit Request(QObject *parent=nullptr);
 };
 
-
 }

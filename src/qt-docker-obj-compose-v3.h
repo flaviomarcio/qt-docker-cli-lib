@@ -5,16 +5,16 @@
 namespace QtDockerCli {
 
 //!
-//! \brief The Command class
+//! \brief The ComposeV3 class
 //!
 //! ref
 //!     https://docs.docker.com/compose/compose-file/compose-file-v3/
-class QT_DOCKER_CLI_LIB_EXPORT Command: public Object
+//!     https://docs.docker.com/compose/
+class QT_DOCKER_CLI_LIB_EXPORT ComposeV3: public Object
 {
     Q_OBJECT
 public:
-    explicit Command(QObject *parent=nullptr);
+    explicit ComposeV3(QObject *parent=nullptr);
 };
-
 
 }

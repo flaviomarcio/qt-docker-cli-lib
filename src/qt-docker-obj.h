@@ -5,6 +5,9 @@
 
 namespace QtDockerCli {
 
+//!
+//! \brief The Object class
+//!
 class QT_DOCKER_CLI_LIB_EXPORT Object: public QObject
 {
     Q_OBJECT

@@ -1,10 +1,3 @@
-ROOT_DIR=$PWD
-
-cd ${ROOT_DIR}/3rdparty/qstm
-u-git-release-update
-
-cd ${ROOT_DIR}/3rdparty/qtrequestclient
-u-git-release-update
-
-cd ${ROOT_DIR}
+git submodule foreach git submodule foreach u-git-release-update;
+git submodule foreach u-git-release-update;
 u-git-release-update

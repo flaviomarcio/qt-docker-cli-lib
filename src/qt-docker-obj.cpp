@@ -2,7 +2,7 @@
 
 namespace QtDockerCli {
 
-Object::Object(QObject *parent):QObject{parent}{
+Object::Object(QObject *parent):QStm::ObjectWrapper{parent}{
 }
 
 }

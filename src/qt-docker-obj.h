@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QStm>
 #include "qt-docker-global.h"
 
 namespace QtDockerCli {
@@ -8,7 +9,7 @@ namespace QtDockerCli {
 //!
 //! \brief The Object class
 //!
-class QT_DOCKER_CLI_LIB_EXPORT Object: public QObject
+class QT_DOCKER_CLI_LIB_EXPORT Object: public QStm::ObjectWrapper
 {
     Q_OBJECT
 public:

@@ -3,5 +3,5 @@ TEMPLATE = lib
 
 CONFIG += silent
 
-include($$PWD/3rdparty/qtrequestclient/qtrequestclient.pri)
+include($$PWD/3rdparty/qstm/qstm.pri)
 include($$PWD/qt-docker-cli.pri)

@@ -4,6 +4,9 @@
 
 namespace QtDockerCli {
 
+//!
+//! \brief The Deploy class
+//!
 class QT_DOCKER_CLI_LIB_EXPORT Deploy: public Object
 {
     Q_OBJECT

@@ -5,7 +5,7 @@
 namespace QtDockerCli {
 
 //!
-//! \brief The Volume class
+//! \brief The Node class
 //!
 //! ref
 //!     https://docs.docker.com/compose/compose-file/compose-file-v3/

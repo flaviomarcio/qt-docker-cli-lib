@@ -5,7 +5,7 @@
 namespace QtDockerCli {
 
 //!
-//! \brief The Volume class
+//! \brief The Info class
 //!
 //! ref
 //!     https://docs.docker.com/engine/reference/commandline/system_info/

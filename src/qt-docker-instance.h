@@ -14,8 +14,6 @@ class Node;
 //!
 //! \brief The Instance class
 //!
-//! ref
-//!     https://docs.docker.com/engine/reference/commandline/
 class QT_DOCKER_CLI_LIB_EXPORT Instance: public QObject
 {
     Q_OBJECT

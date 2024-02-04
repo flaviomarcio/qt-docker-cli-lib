@@ -1,3 +1,6 @@
-[submodule "3rdparty/qt-request-builder"]
-	path = 3rdparty/qt-request-builder
-	url = git@github.com:flaviomarcio/qt-request-builder.git
+[submodule "3rdparty/qtrequestclient"]
+	path = 3rdparty/qtrequestclient
+	url = git@github.com:flaviomarcio/qtrequestclient.git
+[submodule "3rdparty/qstm"]
+	path = 3rdparty/qstm
+	url = git@github.com:flaviomarcio/qstm.git

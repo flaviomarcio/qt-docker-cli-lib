@@ -1,3 +1,5 @@
+INCLUDEPATH += $$PWD
+
 HEADERS += \
     $$PWD/qt-docker-global.h \
     $$PWD/qt-docker-instance.h \

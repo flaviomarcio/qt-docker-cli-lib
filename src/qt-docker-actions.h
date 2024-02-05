@@ -5,13 +5,10 @@
 
 namespace QtDockerCli {
 
-
 class Container;
 class Image;
 class Service;
 class Node;
-
-
 
 //!
 //! \brief The Actions class

@@ -27,6 +27,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/qt-docker-instance.cpp \
+    $$PWD/qt-docker-actions.cpp \
     $$PWD/qt-docker-obj-command.cpp \
     $$PWD/qt-docker-obj-compose-v3.cpp \
     $$PWD/qt-docker-obj-container.cpp \

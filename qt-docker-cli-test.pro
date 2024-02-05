@@ -7,14 +7,11 @@ CONFIG -= debug_and_release
 QT -= gui
 
 TEMPLATE = app
-TARGET = QtRequestClientTests
+TARGET = QtDockerCliTests
 
-INCLUDEPATH+=$$PWD/../src
-#INCLUDEPATH+=$$PWD/../src/private
+# QT_DOCKER_CLI_TEST=true
+# QMAKE_CXXFLAGS += -DQT_DOCKER_CLI_TEST=\\\"$$QT_DOCKER_CLI_TEST\\\"
 
-qt_reforce_request_util_test_MODE=true
-QMAKE_CXXFLAGS += -Dqt_reforce_request_util_test_MODE=\\\"$$qt_reforce_request_util_test_MODE\\\"
-
+include($$PWD/3rdparty/qstm/qstm.pri)
+include($$PWD/qt-docker-cli.pri)
 include($$PWD/test/test.pri)
-
-

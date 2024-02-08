@@ -15,12 +15,10 @@ typedef std::function<void()> MethodSocketConnected;
 class RequestPvt: public QObject{
 public:
     Request *parent;
-    QLocalSocket* socket=nullptr;
     QStm::MetaEnum<Request::Method> method=Request::Method::GET;
     QString path;
     QVariant args;
     QMutex lockStart;
-    QMutex *lock=nullptr;
     QString serverName="/var/run/docker.sock";
     QVariantHash responseHeaders;
     int responseStatus=-1;
@@ -35,13 +33,11 @@ public:
     }
 
     void clear(){
-        sckClose();
         this->requestClear();
         this->responseClear();
     }
 
     void requestClear(){
-        sckClose();
         this->serverName="/var/run/docker.sock";
         this->method=Request::GET;
         this->args.clear();
@@ -55,87 +51,39 @@ public:
     }
 
     void mWait(){
-        lockStart.lock();
-        if(lock==nullptr)
-            return;
-        lockStart.unlock();
-        while(lock!=nullptr)
-            QThread::msleep(1);
-    }
-
-    bool mLock(){
         QMutexLocker locker(&lockStart);
-        if(lock!=nullptr)
-            return false;
-
-        auto lock=new QMutex();
-        lock->tryLock();
-        this->lock=lock;
-        return true;
-    }
-
-    void mUnlock(){
-        QMutexLocker locker(&lockStart);
-        if(this->lock==nullptr)
-            return;
-        this->lock->unlock();
-        this->lock=nullptr;
-        emit this->parent->finished();
     }
 
     QLocalSocket *sckOpen(){
-        if(!mLock())
-            return nullptr;
-        sckClose();
         QMutexLocker locker(&lockStart);
 
         this->responseClear();
         QLocalSocket* socket = new QLocalSocket(this);
-
-        // QObject::connect(socket, &QLocalSocket::connected, [=]() {
-        //     emit parent->started();
-        //     socket->write(args.toUtf8());
-        //     socket->flush();
-        //     emit parent->sent(args);
-        // });
-
-        // QObject::connect(socket, &QLocalSocket::readyRead, [=]() {
-        //     responseBody = socket->readAll();
-        //     emit this->parent->received(responseBody);
-        // });
-
-        // QObject::connect( socket, &QLocalSocket::disconnected, [=](){
-        //     sckClose();
-        // });
-
-        // QObject::connect(socket, &QLocalSocket::errorOccurred, [=](QLocalSocket::LocalSocketError ) {
-        //     sckClose();
-        //     emit this->parent->finished();
-        // });
 
         socket->connectToServer( this->serverName, QIODevice::ReadWrite);
         if(!socket->waitForConnected()){
             socket->deleteLater();
             return nullptr;
         }
-        return (this->socket=socket);
+        return socket;
     }
 
-    void sckClose(){
-        mUnlock();
-        QMutexLocker locker(&lockStart);
+    void sckClose(QLocalSocket* socket){
         if(socket==nullptr)
             return;
-        auto aux=socket;
-        socket=nullptr;
-        aux->disconnectFromServer();
-        aux->close();
-        aux->deleteLater();
+        if(socket->state()==QLocalSocket::ConnectedState){
+            socket->disconnectFromServer();
+            socket->waitForDisconnected();
+        }
+        if(socket->isOpen())
+            socket->close();
+        delete socket;
     }
 
     void call(){
         emit this->parent->started();
         auto socket = sckOpen();
+        QMutexLocker locker(&lockStart);
         if(socket==nullptr){
             emit parent->fail(__fault_is_running);
         }
@@ -156,6 +104,7 @@ public:
 
             static const auto responseStart="HTTP/";//HTTP/1.1 200 OK\r
             static const auto responseBodyStart=QByteArrayLiteral("25e4\r");
+            static const auto responseContinue=QByteArrayLiteral("\r");
             static const auto responseEnd=QByteArrayLiteral("0\r");
 
             bool bodyStarted=false;
@@ -163,45 +112,37 @@ public:
             responseData.clear();
             for(auto&v:rows){
 
-                if(v.startsWith(responseStart)){
+                if(v==responseContinue)
+                    continue;
+                else if(v.startsWith(responseStart)){
                     auto values=v.split(' ');
                     this->responseStatus=
                         (values.size()>1)?QVariant(values.value(1).trimmed()).toInt():-1;
                     this->responseReason=
                         (values.size()>2)?values.value(2).trimmed():"";
-                    continue;
                 }
                 else if(v==responseBodyStart){
                     bodyStarted=true;
+                }
+                else if(v==responseEnd){
                     continue;
                 }
-                else if(v.startsWith(responseEnd)){
-                    break;
-                }
-                else if(v==responseBodyStart){
-                    bodyStarted=true;
-                    continue;
-                }
-                else if(bodyStarted){
-                    v=v.trimmed();
-
-                    if(v.isEmpty())
-                        continue;
-
-                    auto values=v.split(':');
+                else if(!bodyStarted){
+                    auto values=v.trimmed().split(':');
                     if(values.isEmpty())
                         continue;
                     auto key=values.value(0);
                     auto value = (values.size()>1)?values.value(1):"";
                     responseHeaders.insert(key,value);
-
+                }
+                else {
                     responseData.append(v);
                 }
             }
 
             this->responseBody=responseData;
         }
-        sckClose();
+        sckClose(socket);
         emit this->parent->finished();
     }
 };

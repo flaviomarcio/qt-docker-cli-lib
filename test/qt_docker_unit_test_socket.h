@@ -21,25 +21,18 @@ public:
 
     Q_INVOKABLE void test_request()
     {
+        auto &response=
         request
             .call("http://localhost/v1.44/info")
             .wait()
+            .response()
             ;
-        //curl --unix-socket /var/run/docker.sock http://localhost/v1.44/info
+        QVERIFY2(response, "fail on request");
+        QVERIFY2(response.isOK(), "fail on request");
+        QVERIFY2(!response.body().isEmpty(),"Invalid response body");
 
-        // const auto envsIn=QVariantHash{{"user",QByteArray{getenv("USER")}}};
-
-        // {
-        //     auto parserTextIn="user=${user}";
-        //     auto envsOutBytes=QString("user=%1").arg(QByteArray{getenv("USER")});
-
-        //     auto envsInBytes=envs
-        //                            .customEnvs(envsIn)
-        //                            .parser(parserTextIn)
-        //                            .toString();
-
-        //     QCOMPARE_EQ(envsOutBytes, envsInBytes);
-        // }
+        auto v=response.asVariant();
+        QVERIFY2(v.isValid(),"Invalid response body"+response.body());
     }
 
 };

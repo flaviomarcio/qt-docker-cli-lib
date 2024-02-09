@@ -6,7 +6,7 @@
 #include <QVariantList>
 #include <QVariantHash>
 #include "./qt_docker_util_test.h"
-#include "./qt-docker-request.h"
+#include "./qt-docker-instance.h"
 
 using namespace QtDockerCli;
 
@@ -17,7 +17,7 @@ class UT_DockerInstance : public ObjectTest
     Q_OBJECT
     QT_DOCKER_CLI_TEST(UT_DockerInstance)
 public:
-    Request request;
+    Instance instance;
 
     Q_INVOKABLE void test_request()
     {

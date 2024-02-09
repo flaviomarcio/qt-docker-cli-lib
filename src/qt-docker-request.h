@@ -83,7 +83,7 @@ class QT_DOCKER_CLI_LIB_EXPORT Request: public QObject
     friend class RequestPvt;
 public:
     enum Method{
-        HEAD,GET,POST,PUT,DELETE
+        Head,Get,Post,Put,Delete
     };
 
     Q_ENUM(Method)
@@ -94,6 +94,18 @@ public:
     //!
     Q_INVOKABLE explicit Request(QObject *parent=nullptr);
 
+    Request &UnSetProtocol();
+    Request &HTTP();
+    Request &HTTPS();
+    Request &TCP();
+    Request &UDP();
+
+    Request &HEAD();
+    Request &GET();
+    Request &POST();
+    Request &PUT();
+    Request &DELETE();
+
     //!
     //! \brief clear
     //! \return
@@ -101,11 +113,24 @@ public:
     Request &clear();
 
     //!
-    //! \brief serverName
+    //! \brief url
     //! \return
     //!
-    QString &serverName() const;
-    Request &serverName(const QString &newServerName);
+    QUrl &url()const;
+
+    //!
+    //! \brief protocol
+    //! \return
+    //!
+    QString &protocol() const;
+    Request &protocol(const QString &newProtocol);
+
+    //!
+    //! \brief hostName
+    //! \return
+    //!
+    QString &hostName() const;
+    Request &hostName(const QString &newServerName);
 
     //!
     //! \brief method

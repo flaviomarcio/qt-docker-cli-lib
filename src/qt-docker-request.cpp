@@ -8,23 +8,31 @@
 
 namespace QtDockerCli {
 
+static const auto __protocol_http="http";
+static const auto __protocol_https="https";
+static const auto __protocol_tcp="tcp";
+static const auto __protocol_udp="udp";
 static const auto __fault_is_running="Socket running...";
+static const auto __path_separador="/";
+static const auto __path_separador_double="//";
 
 typedef std::function<void()> MethodSocketConnected;
 
 class RequestPvt: public QObject{
 public:
     Request *parent;
-    QStm::MetaEnum<Request::Method> method=Request::Method::GET;
+    QStm::MetaEnum<Request::Method> method=Request::Method::Get;
+    QString protocol;
     QString path;
     QVariant args;
     QMutex lockStart;
-    QString serverName="/var/run/docker.sock";
+    QString hostName="/var/run/docker.sock";
     QVariantHash responseHeaders;
     int responseStatus=-1;
     QByteArray responseReason;
     QByteArray responseBody;
     Response response;
+    QUrl uri;
     explicit RequestPvt(Request *parent=nullptr):QObject{parent}, parent{parent}, response{parent}{
     }
 
@@ -38,8 +46,12 @@ public:
     }
 
     void requestClear(){
-        this->serverName="/var/run/docker.sock";
-        this->method=Request::GET;
+        this->hostName="/var/run/docker.sock";
+        this->protocol.clear();
+        this->hostName.clear();
+        this->parent->clear();
+        this->args.clear();
+        this->method=Request::Get;
         this->args.clear();
     }
 
@@ -60,7 +72,7 @@ public:
         this->responseClear();
         QLocalSocket* socket = new QLocalSocket(this);
 
-        socket->connectToServer( this->serverName, QIODevice::ReadWrite);
+        socket->connectToServer( this->hostName, QIODevice::ReadWrite);
         if(!socket->waitForConnected()){
             socket->deleteLater();
             return nullptr;
@@ -221,6 +233,55 @@ Request::Request(QObject *parent):QObject{parent}, p{new RequestPvt{this}}
 {
 }
 
+Request &Request::UnSetProtocol()
+{
+    return this->protocol({});
+}
+
+Request &Request::HTTP()
+{
+    return this->protocol(__protocol_http);
+}
+
+Request &Request::HTTPS()
+{
+    return this->protocol(__protocol_https);
+}
+
+Request &Request::TCP()
+{
+    return this->protocol(__protocol_tcp);
+}
+
+Request &Request::UDP()
+{
+    return this->protocol(__protocol_udp);
+}
+
+Request &Request::HEAD()
+{
+    return this->method(Head);
+}
+
+Request &Request::GET()
+{
+    return this->method(Get);
+}
+
+Request &Request::POST()
+{
+    return this->method(Post);
+}
+
+Request &Request::PUT()
+{
+    return this->method(Put);
+}
+
+Request &Request::DELETE()
+{
+    return this->method(Delete);
+}
 
 Request &Request::clear()
 {
@@ -228,14 +289,34 @@ Request &Request::clear()
     return *this;
 }
 
-QString &Request::serverName()const
+QUrl &Request::url() const
 {
-    return p->serverName;
+    auto path=QString("%1%2").arg(this->hostName(), this->path());
+    while(path.contains(__path_separador_double))
+        path=path.replace(__path_separador_double,__path_separador);
+    auto url=QString("%1:%2%3").arg(this->protocol(), __path_separador_double, path);
+    return p->uri=QUrl(url);
 }
 
-Request &Request::serverName(const QString &newServerName)
+QString &Request::protocol() const
 {
-    p->serverName=newServerName;
+    return p->protocol;
+}
+
+Request &Request::protocol(const QString &newProtocol)
+{
+    p->protocol=newProtocol.trimmed().toLower();
+    return *this;
+}
+
+QString &Request::hostName()const
+{
+    return p->hostName;
+}
+
+Request &Request::hostName(const QString &newServerName)
+{
+    p->hostName=newServerName;
     return *this;
 }
 

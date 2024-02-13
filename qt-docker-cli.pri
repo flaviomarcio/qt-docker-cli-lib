@@ -1,7 +1,8 @@
 QTREFORCE_DOCKER_CLI=true
 DEFINES+=QTREFORCE_DOCKER_CLI
 
-QT+=core network
+QT += core
+QT += network
 QT-=gui
 
 include($$PWD/src/src.pri)

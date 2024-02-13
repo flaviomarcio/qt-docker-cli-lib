@@ -16,17 +16,16 @@ class QT_DOCKER_CLI_LIB_EXPORT Environments: public Object
     Q_OBJECT
     Q_PROPERTY(QVariantHash envs READ envs WRITE setEnvs RESET resetEnvs NOTIFY envsChanged FINAL)
 public:
-    explicit Environments(QObject *parent=nullptr);
+    Q_INVOKABLE explicit Environments(QObject *parent=nullptr);
+
     QVariantHash envs() const;
     void setEnvs(const QVariantHash &newEnvs);
     void resetEnvs();
 
 signals:
     void envsChanged();
-
 private:
     QVariantHash _envs;
 };
-
 
 }

@@ -19,7 +19,8 @@ class QT_DOCKER_CLI_LIB_EXPORT Mount: public Object
 public:
     enum Type{bind,volume,tmpfs};
     Q_ENUM(Type)
-    explicit Mount(QObject *parent=nullptr);
+
+    Q_INVOKABLE explicit Mount(QObject *parent=nullptr);
 
     Type type() const;
     void setType(Type newType);

@@ -15,18 +15,20 @@ namespace QtDockerCliTest {
 class UT_Socket : public ObjectTest
 {
     Q_OBJECT
-    QT_DOCKER_CLI_TEST(UT_Socket)
+    Q_DOCKER_CLI_TEST(UT_Socket)
 public:
     Request request;
 
     Q_INVOKABLE void test_request()
     {
-        auto &response=
-        request
-            .call("http://localhost/v1.44/info")
-            .wait()
-            .response()
-            ;
+        auto &response=request
+                             .protocol("http")
+                             .hostName("localhost")
+                             .basePath("/v1.44")
+                             .path("/info")
+                             .call()
+                             .wait()
+                             .response();
         QVERIFY2(response, "fail on request");
         QVERIFY2(response.isOK(), "fail on request");
         QVERIFY2(!response.body().isEmpty(),"Invalid response body");

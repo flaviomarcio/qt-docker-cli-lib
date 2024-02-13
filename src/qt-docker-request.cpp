@@ -8,6 +8,16 @@
 
 namespace QtDockerCli {
 
+static const auto __headers="headers";
+static const auto __method="method";
+static const auto __hostname="hostName";
+static const auto __protocol="protocol";
+static const auto __basepath="basePath";
+static const auto __path="path";
+static const auto __args="args";
+static const auto __body="body";
+static const auto __uri="uri";
+
 static const auto __protocol_http="http";
 static const auto __protocol_https="https";
 static const auto __protocol_tcp="tcp";
@@ -20,19 +30,24 @@ typedef std::function<void()> MethodSocketConnected;
 
 class RequestPvt: public QObject{
 public:
+    QMutex lockStart;
     Request *parent;
     QStm::MetaEnum<Request::Method> method=Request::Method::Get;
+    QVariantHash headers;
+    QString socket="/var/run/docker.sock";
     QString protocol;
+    QString hostName;
+    int port=0;
+    QString basePath;
     QString path;
     QVariant args;
-    QMutex lockStart;
-    QString hostName="/var/run/docker.sock";
-    QVariantHash responseHeaders;
+    QVariant body;
+    QByteArray responseProtocol;
     int responseStatus=-1;
+    QVariantHash responseHeaders;
     QByteArray responseReason;
     QByteArray responseBody;
     Response response;
-    QUrl uri;
     explicit RequestPvt(Request *parent=nullptr):QObject{parent}, parent{parent}, response{parent}{
     }
 
@@ -46,20 +61,33 @@ public:
     }
 
     void requestClear(){
-        this->hostName="/var/run/docker.sock";
+        this->method=Request::Get;
         this->protocol.clear();
         this->hostName.clear();
-        this->parent->clear();
+        this->port=0;
+        this->basePath.clear();
+        this->path.clear();
         this->args.clear();
-        this->method=Request::Get;
         this->args.clear();
     }
 
     void responseClear(){
-        this->responseHeaders.clear();
+        this->responseProtocol.clear();
         this->responseStatus=-1;
         this->responseReason.clear();
+        this->responseHeaders.clear();
         this->responseBody.clear();
+    }
+
+    QUrl url(){
+        auto sport=(this->port==0 || this->port==80 || this->port==443)
+                         ?""
+                         :QStringLiteral(":%1").arg(this->port);
+        auto path=QString("%1%2/%3/%4").arg(hostName, sport, basePath, this->path);
+        while(path.contains(__path_separador_double))
+            path=path.replace(__path_separador_double,__path_separador);
+        auto url=QString("%1:%2%3").arg(this->protocol, __path_separador_double, path);
+        return QUrl(url);
     }
 
     void mWait(){
@@ -72,7 +100,7 @@ public:
         this->responseClear();
         QLocalSocket* socket = new QLocalSocket(this);
 
-        socket->connectToServer( this->hostName, QIODevice::ReadWrite);
+        socket->connectToServer( this->socket, QIODevice::ReadWrite);
         if(!socket->waitForConnected()){
             socket->deleteLater();
             return nullptr;
@@ -92,7 +120,67 @@ public:
         delete socket;
     }
 
+    QStringList responseGetBlock(QList<QByteArray> &lines){
+        QStringList __return;
+        while(!lines.isEmpty()){
+            auto line=lines.takeFirst();
+            if(line=="\r")
+                break;
+
+            line=line.trimmed();
+            if(!line.isEmpty())
+                __return.append(line.trimmed());
+        }
+
+        return __return;
+    }
+
+    void responseReadProtocol(QList<QByteArray> &lines){
+        if(lines.isEmpty())
+            return;
+        auto v=lines.takeFirst();
+        static const auto responseStart="HTTP/";//HTTP/1.1 200 OK\r
+        if(!v.startsWith(responseStart))
+            return;
+        auto values=v.split(' ');
+
+        this->responseProtocol=values.value(0).trimmed();
+
+        this->responseStatus=
+            (values.size()>1)?QVariant(values.value(1).trimmed()).toInt():-1;
+        this->responseReason=
+            (values.size()>2)?values.value(2).trimmed():"";
+    }
+
+    void responseReadHeaders(QList<QByteArray> &lines){
+        if(lines.isEmpty())
+            return;
+
+        auto block=responseGetBlock(lines);
+        for (auto &v:block) {
+            auto values=v.trimmed().split(':');
+            if(values.isEmpty())
+                continue;
+            auto key=values.value(0);
+            auto value = (values.size()>1)?values.value(1):"";
+            this->responseHeaders.insert(key,value);
+        }
+    }
+
+    void responseReadBody(QList<QByteArray> &lines){
+        if(lines.isEmpty())
+            return;
+        auto firstLine=lines.takeFirst();
+        auto block=responseGetBlock(lines);
+        if(block.isEmpty())
+            block.append(firstLine);
+        for (auto &v:block)
+            this->responseBody.append(v.toUtf8());
+    }
+
+
     void call(){
+        this->responseClear();
         emit this->parent->started();
         auto socket = sckOpen();
         QMutexLocker locker(&lockStart);
@@ -106,53 +194,19 @@ public:
             static const auto __request=QStringLiteral("%1 %2 HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n");
 
             // Envie a solicitação para listar os contêineres
-            auto requestData = __request.arg(this->method.name(), this->path).toUtf8();
+            auto requestData = __request.arg(this->method.name().toUpper(), this->url().toString()).toUtf8();
             socket->write(requestData);
             socket->waitForBytesWritten();
 
-            QByteArray responseData;
+            QByteArray buffer;
             while (socket->waitForReadyRead())
-                responseData.append(socket->readAll());
+                buffer.append(socket->readAll());
+            auto rows=buffer.split('\n');
+            buffer.clear();
 
-            static const auto responseStart="HTTP/";//HTTP/1.1 200 OK\r
-            static const auto responseBodyStart=QByteArrayLiteral("25e4\r");
-            static const auto responseContinue=QByteArrayLiteral("\r");
-            static const auto responseEnd=QByteArrayLiteral("0\r");
-
-            bool bodyStarted=false;
-            auto rows=responseData.split('\n');
-            responseData.clear();
-            for(auto&v:rows){
-
-                if(v==responseContinue)
-                    continue;
-                else if(v.startsWith(responseStart)){
-                    auto values=v.split(' ');
-                    this->responseStatus=
-                        (values.size()>1)?QVariant(values.value(1).trimmed()).toInt():-1;
-                    this->responseReason=
-                        (values.size()>2)?values.value(2).trimmed():"";
-                }
-                else if(v==responseBodyStart){
-                    bodyStarted=true;
-                }
-                else if(v==responseEnd){
-                    continue;
-                }
-                else if(!bodyStarted){
-                    auto values=v.trimmed().split(':');
-                    if(values.isEmpty())
-                        continue;
-                    auto key=values.value(0);
-                    auto value = (values.size()>1)?values.value(1):"";
-                    responseHeaders.insert(key,value);
-                }
-                else {
-                    responseData.append(v);
-                }
-            }
-
-            this->responseBody=responseData;
+            this->responseReadProtocol(rows);
+            this->responseReadHeaders(rows);
+            this->responseReadBody(rows);
         }
         sckClose(socket);
         emit this->parent->finished();
@@ -289,13 +343,66 @@ Request &Request::clear()
     return *this;
 }
 
-QUrl &Request::url() const
+QVariantHash Request::settings()
 {
-    auto path=QString("%1%2").arg(this->hostName(), this->path());
-    while(path.contains(__path_separador_double))
-        path=path.replace(__path_separador_double,__path_separador);
-    auto url=QString("%1:%2%3").arg(this->protocol(), __path_separador_double, path);
-    return p->uri=QUrl(url);
+    QVariantHash __return;
+    __return.insert(__method, p->method.name());
+    __return.insert(__headers, p->headers);
+    __return.insert(__protocol, p->protocol);
+    __return.insert(__hostname, p->hostName);
+    __return.insert(__basepath, p->basePath);
+    __return.insert(__path, p->path);
+    __return.insert(__args, p->args);
+    __return.insert(__body, p->body);
+    __return.insert(__uri, this->url());
+    return __return;
+}
+
+Request &Request::settings(const QVariant &newSettings)
+{
+    auto vHash=newSettings.toHash();
+    p->protocol=newSettings.toString();
+    if(vHash.contains(__method))
+        p->method = vHash.value(__method);
+
+    if(vHash.contains(__headers))
+        p->headers = vHash.value(__headers).toHash();
+
+    if(vHash.contains(__protocol))
+        p->protocol = vHash.value(__protocol).toString();
+
+    if(vHash.contains(__hostname))
+        p->hostName = vHash.value(__hostname).toString();
+
+    if(vHash.contains(__basepath))
+        p->basePath = vHash.value(__basepath).toString();
+
+    if(vHash.contains(__path))
+        p->path = vHash.value(__path).toString();
+
+    if(vHash.contains(__args))
+        p->args = vHash.value(__args).toString();
+
+    if(vHash.contains(__body))
+        p->body = vHash.value(__body).toString();
+
+    return *this;
+}
+
+QUrl Request::url() const
+{
+    return p->url();
+}
+
+Request::Method Request::method()
+{
+    return p->method.type();
+}
+
+Request &Request::method(const Method &newMethod)
+{
+    p->method=newMethod;
+    return *this;
 }
 
 QString &Request::protocol() const
@@ -320,14 +427,25 @@ Request &Request::hostName(const QString &newServerName)
     return *this;
 }
 
-Request::Method Request::method()
+int Request::port() const
 {
-    return p->method.type();
+    return p->port;
 }
 
-Request &Request::method(const Method &newMethod)
+Request &Request::port(const int port)
 {
-    p->method=newMethod;
+    p->port=port;
+    return *this;
+}
+
+QString &Request::basePath() const
+{
+    return p->basePath;
+}
+
+Request &Request::basePath(const QString &newBasePath)
+{
+    p->basePath=newBasePath;
     return *this;
 }
 

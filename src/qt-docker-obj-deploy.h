@@ -11,8 +11,7 @@ class QT_DOCKER_CLI_LIB_EXPORT Deploy: public Object
 {
     Q_OBJECT
 public:
-    explicit Deploy(QObject *parent=nullptr);
+    Q_INVOKABLE explicit Deploy(QObject *parent=nullptr);
 };
-
 
 }

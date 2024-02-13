@@ -21,7 +21,7 @@ void Volume::setCreatedAt(const QDateTime &newCreatedAt)
 
 void Volume::resetCreatedAt()
 {
-    setCreatedAt({}); // TODO: Adapt to use your actual default value
+    setCreatedAt({});
 }
 
 QString Volume::driver() const
@@ -39,7 +39,7 @@ void Volume::setDriver(const QString &newDriver)
 
 void Volume::resetDriver()
 {
-    setDriver({}); // TODO: Adapt to use your actual default value
+    setDriver({});
 }
 
 QVariantHash Volume::labels() const
@@ -55,7 +55,7 @@ void Volume::setLabels(const QVariantHash &newLabels)
 
 void Volume::resetLabels()
 {
-    setLabels({}); // TODO: Adapt to use your actual default value
+    setLabels({});
 }
 
 QString Volume::mountPoint() const
@@ -73,7 +73,7 @@ void Volume::setMountPoint(const QString &newMountPoint)
 
 void Volume::resetMountPoint()
 {
-    setMountPoint({}); // TODO: Adapt to use your actual default value
+    setMountPoint({});
 }
 
 QString Volume::name() const
@@ -91,7 +91,7 @@ void Volume::setName(const QString &newName)
 
 void Volume::resetName()
 {
-    setName({}); // TODO: Adapt to use your actual default value
+    setName({});
 }
 
 QVariantHash Volume::options() const
@@ -107,7 +107,7 @@ void Volume::setOptions(const QVariantHash &newOptions)
 
 void Volume::resetOptions()
 {
-    setOptions({}); // TODO: Adapt to use your actual default value
+    setOptions({});
 }
 
 QString Volume::scope() const
@@ -125,7 +125,7 @@ void Volume::setScope(const QString &newScope)
 
 void Volume::resetScope()
 {
-    setScope({}); // TODO: Adapt to use your actual default value
+    setScope({});
 }
 
 }

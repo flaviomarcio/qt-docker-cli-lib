@@ -29,7 +29,8 @@ public:
     };
     Q_ENUM(PublishMode)
 
-    explicit Port(QObject *parent=nullptr);
+    Q_INVOKABLE explicit Port(QObject *parent=nullptr);
+
     Protocol protocol() const;
     void setProtocol(Protocol newProtocol);
     void resetProtocol();

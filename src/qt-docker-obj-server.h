@@ -13,7 +13,7 @@ class QT_DOCKER_CLI_LIB_EXPORT Server: public Object
 {
     Q_OBJECT
 public:
-    explicit Server(QObject *parent=nullptr);
+    Q_INVOKABLE explicit Server(QObject *parent=nullptr);
 };
 
 }

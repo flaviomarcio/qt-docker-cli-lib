@@ -14,7 +14,7 @@ class QT_DOCKER_CLI_LIB_EXPORT ComposeV3: public Object
 {
     Q_OBJECT
 public:
-    explicit ComposeV3(QObject *parent=nullptr);
+    Q_INVOKABLE explicit ComposeV3(QObject *parent=nullptr);
 };
 
 }

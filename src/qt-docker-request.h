@@ -1,6 +1,10 @@
 #pragma once
 
 #include <QObject>
+#include <QVariant>
+#include <QVariantHash>
+#include <QVariantMap>
+#include <QVariantList>
 #include "qt-docker-global.h"
 
 namespace QtDockerCli {
@@ -13,6 +17,9 @@ class QT_DOCKER_CLI_LIB_EXPORT Response: public QObject
 public:
     Q_INVOKABLE explicit Response(Request *parent=nullptr);
 
+    //!
+    //! \brief operator bool
+    //!
     operator bool() const;
 
     //!
@@ -113,10 +120,24 @@ public:
     Request &clear();
 
     //!
+    //! \brief settings
+    //! \return
+    //!
+    QVariantHash settings();
+    Request &settings(const QVariant &newSettings);
+
+    //!
     //! \brief url
     //! \return
     //!
-    QUrl &url()const;
+    QUrl url()const;
+
+    //!
+    //! \brief method
+    //! \return
+    //!
+    Method method();
+    Request &method(const Method &newMethod);
 
     //!
     //! \brief protocol
@@ -133,11 +154,18 @@ public:
     Request &hostName(const QString &newServerName);
 
     //!
-    //! \brief method
+    //! \brief port
     //! \return
     //!
-    Method method();
-    Request &method(const Method &newMethod);
+    int port() const;
+    Request &port(const int port);
+
+    //!
+    //! \brief basePath
+    //! \return
+    //!
+    QString &basePath() const;
+    Request &basePath(const QString &newBasePath);
 
     //!
     //! \brief path

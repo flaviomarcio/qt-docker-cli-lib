@@ -13,7 +13,7 @@ class QT_DOCKER_CLI_LIB_EXPORT Info: public Object
 {
     Q_OBJECT
 public:
-    explicit Info(QObject *parent=nullptr);
+    Q_INVOKABLE explicit Info(QObject *parent=nullptr);
 };
 
 }

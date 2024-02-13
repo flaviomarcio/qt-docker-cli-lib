@@ -22,8 +22,10 @@ HEADERS += \
     $$PWD/qt-docker-obj-server.h \
     $$PWD/qt-docker-obj-service.h \
     $$PWD/qt-docker-obj-stack.h \
+    $$PWD/qt-docker-obj-swarm.h \
     $$PWD/qt-docker-obj-volume.h \
     $$PWD/qt-docker-obj.h \
+    $$PWD/qt-docker-remote-host.h \
     $$PWD/qt-docker-request.h \
 
 
@@ -48,6 +50,8 @@ SOURCES += \
     $$PWD/qt-docker-obj-server.cpp \
     $$PWD/qt-docker-obj-service.cpp \
     $$PWD/qt-docker-obj-stack.cpp \
+    $$PWD/qt-docker-obj-swarm.cpp \
     $$PWD/qt-docker-obj-volume.cpp \
     $$PWD/qt-docker-obj.cpp \
+    $$PWD/qt-docker-remote-host.cpp \
     $$PWD/qt-docker-request.cpp \

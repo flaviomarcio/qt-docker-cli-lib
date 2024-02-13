@@ -17,7 +17,8 @@ class QT_DOCKER_CLI_LIB_EXPORT ResourceLimit: public Object
     Q_PROPERTY(QVariant cpu READ cpu WRITE setCpu RESET resetCpu NOTIFY cpuChanged FINAL)
     Q_PROPERTY(QVariant memory READ memory WRITE setMemory RESET resetMemory NOTIFY memoryChanged FINAL)
 public:
-    explicit ResourceLimit(QObject *parent=nullptr);
+    Q_INVOKABLE explicit ResourceLimit(QObject *parent=nullptr);
+
     QVariant cpu() const;
     void setCpu(const QVariant &newCpu);
     void resetCpu();

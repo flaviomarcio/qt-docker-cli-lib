@@ -16,7 +16,7 @@ class QT_DOCKER_CLI_LIB_EXPORT Resource: public Object
     Q_OBJECT
     Q_PROPERTY(ResourceLimit *resourceLimit READ resourceLimit WRITE setResourceLimit RESET resetResourceLimit NOTIFY resourceLimitChanged FINAL)
 public:
-    explicit Resource(QObject *parent=nullptr);
+    Q_INVOKABLE explicit Resource(QObject *parent=nullptr);
 
     //!
     //! \brief resourceLimit

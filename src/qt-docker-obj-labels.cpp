@@ -21,7 +21,7 @@ void Labels::setLabels(const QVariantHash &newLabels)
 
 void Labels::resetLabels()
 {
-    setLabels({}); // TODO: Adapt to use your actual default value
+    setLabels({});
 }
 
 }

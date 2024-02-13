@@ -21,7 +21,7 @@ void Port::setProtocol(Protocol newProtocol)
 
 void Port::resetProtocol()
 {
-    setProtocol({}); // TODO: Adapt to use your actual default value
+    setProtocol({});
 }
 
 Port::PublishMode Port::publishMode() const
@@ -39,7 +39,7 @@ void Port::setPublishMode(PublishMode newPublishMode)
 
 void Port::resetPublishMode()
 {
-    setPublishMode({}); // TODO: Adapt to use your actual default value
+    setPublishMode({});
 }
 
 int Port::targetPort() const
@@ -57,7 +57,7 @@ void Port::setTargetPort(int newTargetPort)
 
 void Port::resetTargetPort()
 {
-    setTargetPort({}); // TODO: Adapt to use your actual default value
+    setTargetPort({});
 }
 
 int Port::publishedPort() const
@@ -75,7 +75,7 @@ void Port::setPublishedPort(int newPublishedPort)
 
 void Port::resetPublishedPort()
 {
-    setPublishedPort({}); // TODO: Adapt to use your actual default value
+    setPublishedPort({});
 }
 
 }

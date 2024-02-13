@@ -9,8 +9,8 @@ QT -= gui
 TEMPLATE = app
 TARGET = QtDockerCliTests
 
-# QT_DOCKER_CLI_TEST=true
-# QMAKE_CXXFLAGS += -DQT_DOCKER_CLI_TEST=\\\"$$QT_DOCKER_CLI_TEST\\\"
+QT_DOCKER_CLI_TEST=true
+QMAKE_CXXFLAGS += -DQT_DOCKER_CLI_TEST=\\\"$$QT_DOCKER_CLI_TEST\\\"
 
 include($$PWD/3rdparty/qstm/qstm.pri)
 include($$PWD/qt-docker-cli.pri)

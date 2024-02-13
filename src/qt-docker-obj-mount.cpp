@@ -21,7 +21,7 @@ void Mount::setType(Mount::Type newType)
 
 void Mount::resetType()
 {
-    setType({}); // TODO: Adapt to use your actual default value
+    setType({});
 }
 
 QString Mount::source() const
@@ -39,7 +39,7 @@ void Mount::setSource(const QString &newSource)
 
 void Mount::resetSource()
 {
-    setSource({}); // TODO: Adapt to use your actual default value
+    setSource({});
 }
 
 QString Mount::target() const
@@ -57,7 +57,7 @@ void Mount::setTarget(const QString &newTarget)
 
 void Mount::resetTarget()
 {
-    setTarget({}); // TODO: Adapt to use your actual default value
+    setTarget({});
 }
 
 }

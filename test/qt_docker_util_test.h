@@ -15,7 +15,7 @@
 
 namespace QtDockerCliTest{
 
-#define QT_DOCKER_CLI_TEST(OBJECT) \
+#define Q_DOCKER_CLI_TEST(OBJECT) \
 public:\
 Q_INVOKABLE explicit OBJECT(QObject *parent=nullptr):ObjectTest{parent}{}
 

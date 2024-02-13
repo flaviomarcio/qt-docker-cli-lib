@@ -21,7 +21,7 @@ void Environments::setEnvs(const QVariantHash &newEnvs)
 
 void Environments::resetEnvs()
 {
-    setEnvs({}); // TODO: Adapt to use your actual default value
+    setEnvs({});
 }
 
 }

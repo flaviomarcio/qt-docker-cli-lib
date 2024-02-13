@@ -21,7 +21,7 @@ void ResourceLimit::setCpu(const QVariant &newCpu)
 
 void ResourceLimit::resetCpu()
 {
-    setCpu({}); // TODO: Adapt to use your actual default value
+    setCpu({});
 }
 
 QVariant ResourceLimit::memory() const
@@ -39,7 +39,7 @@ void ResourceLimit::setMemory(const QVariant &newMemory)
 
 void ResourceLimit::resetMemory()
 {
-    setMemory({}); // TODO: Adapt to use your actual default value
+    setMemory({});
 }
 
 }

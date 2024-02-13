@@ -21,7 +21,7 @@ void Resource::setResourceLimit(ResourceLimit *newResourceLimit)
 
 void Resource::resetResourceLimit()
 {
-    setResourceLimit({}); // TODO: Adapt to use your actual default value
+    setResourceLimit({});
 }
 
 }

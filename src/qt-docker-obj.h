@@ -12,7 +12,7 @@
 #include <QTime>
 #include <QDateTime>
 #include <QObject>
-#include <QStm>
+#include "../3rdparty/qstm/src/qstm_object_wrapper.h"
 #include "qt-docker-global.h"
 
 namespace QtDockerCli {

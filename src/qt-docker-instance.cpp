@@ -1,6 +1,7 @@
 #include "qt-docker-instance.h"
 #include "qt-docker-request.h"
 #include "../3rdparty/qstm/src/qstm_meta_items.h"
+#include "../3rdparty/qstm/src/qstm_util_date.h"
 #include <QMutex>
 
 namespace QtDockerCli {

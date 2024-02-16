@@ -1,9 +1,12 @@
 INCLUDEPATH += $$PWD
 
-!QTREFORCE_QSTM: include($$PWD/../3rdparty/qstm/qstm.pri)
+!QTREFORCE_QSTM:{
+include($$PWD/../3rdparty/qstm/qstm.pri)
+}
 
 HEADERS += \
     $$PWD/qt-docker-global.h \
+    $$PWD/qt-docker-cli.h \
     $$PWD/qt-docker-instance.h \
     $$PWD/qt-docker-actions.h \
     $$PWD/qt-docker-obj-command.h \

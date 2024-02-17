@@ -75,7 +75,7 @@ public:
     //! \brief swarm
     //! \return
     //!
-    const Swarm &swarm()const;
+    Swarm &swarm();
 
     //!
     //! \brief nodes
@@ -101,6 +101,7 @@ signals:
     void connected();
     void fail(QString message);
     void finished();
+    void refreshed();
 };
 
 

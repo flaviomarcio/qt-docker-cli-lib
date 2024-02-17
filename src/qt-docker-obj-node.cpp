@@ -21,7 +21,7 @@ void Node::setId(const QString &newId)
 
 void Node::resetId()
 {
-    setId({}); // TODO: Adapt to use your actual default value
+    setId({}); 
 }
 
 QVariantHash Node::version() const
@@ -39,7 +39,7 @@ void Node::setVersion(const QVariantHash &newVersion)
 
 void Node::resetVersion()
 {
-    setVersion({}); // TODO: Adapt to use your actual default value
+    setVersion({}); 
 }
 
 QDateTime Node::createdAt() const
@@ -57,7 +57,7 @@ void Node::setCreatedAt(const QDateTime &newCreatedAt)
 
 void Node::resetCreatedAt()
 {
-    setCreatedAt({}); // TODO: Adapt to use your actual default value
+    setCreatedAt({}); 
 }
 
 QDateTime Node::updatedAt() const
@@ -75,7 +75,7 @@ void Node::setUpdatedAt(const QDateTime &newUpdatedAt)
 
 void Node::resetUpdatedAt()
 {
-    setUpdatedAt({}); // TODO: Adapt to use your actual default value
+    setUpdatedAt({}); 
 }
 
 QVariantHash Node::spec() const
@@ -93,7 +93,7 @@ void Node::setSpec(const QVariantHash &newSpec)
 
 void Node::resetSpec()
 {
-    setSpec({}); // TODO: Adapt to use your actual default value
+    setSpec({}); 
 }
 
 QVariantHash Node::description() const
@@ -111,7 +111,7 @@ void Node::setDescription(const QVariantHash &newDescription)
 
 void Node::resetDescription()
 {
-    setDescription({}); // TODO: Adapt to use your actual default value
+    setDescription({}); 
 }
 
 QVariantHash Node::status() const
@@ -129,7 +129,7 @@ void Node::setStatus(const QVariantHash &newStatus)
 
 void Node::resetStatus()
 {
-    setStatus({}); // TODO: Adapt to use your actual default value
+    setStatus({}); 
 }
 
 QVariantHash Node::managerStatus() const
@@ -147,7 +147,7 @@ void Node::setManagerStatus(const QVariantHash &newManagerStatus)
 
 void Node::resetManagerStatus()
 {
-    setManagerStatus({}); // TODO: Adapt to use your actual default value
+    setManagerStatus({}); 
 }
 
 }

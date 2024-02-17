@@ -164,6 +164,7 @@ Instance &Instance::clear()
 Instance &Instance::refresh()
 {
     p->refresh();
+    emit refreshed();
     return *this;
 }
 
@@ -187,7 +188,7 @@ const QList<Volume *> &Instance::volumes() const
     return p->volumes.items();
 }
 
-const Swarm &Instance::swarm() const
+Swarm &Instance::swarm()
 {
     return p->swarm;
 }

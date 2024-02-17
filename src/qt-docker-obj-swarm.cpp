@@ -111,7 +111,7 @@ void Swarm::setSubnetSize(const QString &newSubnetSize)
 
 void Swarm::resetSubnetSize()
 {
-    setSubnetSize({}); // TODO: Adapt to use your actual default value
+    setSubnetSize({}); 
 }
 
 int Swarm::dataPathPort() const
@@ -129,7 +129,7 @@ void Swarm::setDataPathPort(int newDataPathPort)
 
 void Swarm::resetDataPathPort()
 {
-    setDataPathPort({}); // TODO: Adapt to use your actual default value
+    setDataPathPort({}); 
 }
 
 QStringList Swarm::defaultAddrPool() const
@@ -147,7 +147,7 @@ void Swarm::setDefaultAddrPool(const QStringList &newDefaultAddrPool)
 
 void Swarm::resetDefaultAddrPool()
 {
-    setDefaultAddrPool({}); // TODO: Adapt to use your actual default value
+    setDefaultAddrPool({}); 
 }
 
 bool Swarm::rootRotationInProgress() const
@@ -165,7 +165,7 @@ void Swarm::setRootRotationInProgress(bool newRootRotationInProgress)
 
 void Swarm::resetRootRotationInProgress()
 {
-    setRootRotationInProgress({}); // TODO: Adapt to use your actual default value
+    setRootRotationInProgress({}); 
 }
 
 QVariantHash Swarm::TLSInfo() const
@@ -183,7 +183,7 @@ void Swarm::setTLSInfo(const QVariantHash &newTLSInfo)
 
 void Swarm::resetTLSInfo()
 {
-    setTLSInfo({}); // TODO: Adapt to use your actual default value
+    setTLSInfo({}); 
 }
 
 QVariantHash Swarm::joinTokens() const
@@ -201,7 +201,7 @@ void Swarm::setJoinTokens(const QVariantHash &newJoinTokens)
 
 void Swarm::resetJoinTokens()
 {
-    setJoinTokens({}); // TODO: Adapt to use your actual default value
+    setJoinTokens({}); 
 }
 
 }

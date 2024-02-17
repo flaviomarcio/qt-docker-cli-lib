@@ -21,7 +21,7 @@ void Container::setId(const QString &newId)
 
 void Container::resetId()
 {
-    setId({}); // TODO: Adapt to use your actual default value
+    setId({}); 
 }
 
 QStringList Container::names() const
@@ -39,7 +39,7 @@ void Container::setNames(const QStringList &newNames)
 
 void Container::resetNames()
 {
-    setNames({}); // TODO: Adapt to use your actual default value
+    setNames({}); 
 }
 
 QString Container::image() const
@@ -57,7 +57,7 @@ void Container::setImage(const QString &newImage)
 
 void Container::resetImage()
 {
-    setImage({}); // TODO: Adapt to use your actual default value
+    setImage({}); 
 }
 
 QString Container::imageID() const
@@ -75,7 +75,7 @@ void Container::setImageID(const QString &newImageID)
 
 void Container::resetImageID()
 {
-    setImageID({}); // TODO: Adapt to use your actual default value
+    setImageID({}); 
 }
 
 QString Container::command() const
@@ -93,7 +93,7 @@ void Container::setCommand(const QString &newCommand)
 
 void Container::resetCommand()
 {
-    setCommand({}); // TODO: Adapt to use your actual default value
+    setCommand({}); 
 }
 
 QString Container::created() const
@@ -111,7 +111,7 @@ void Container::setCreated(const QString &newCreated)
 
 void Container::resetCreated()
 {
-    setCreated({}); // TODO: Adapt to use your actual default value
+    setCreated({}); 
 }
 
 QVariantList Container::ports() const
@@ -129,7 +129,7 @@ void Container::setPorts(const QVariantList &newPorts)
 
 void Container::resetPorts()
 {
-    setPorts({}); // TODO: Adapt to use your actual default value
+    setPorts({}); 
 }
 
 QVariantHash Container::labels() const
@@ -147,7 +147,7 @@ void Container::setLabels(const QVariantHash &newLabels)
 
 void Container::resetLabels()
 {
-    setLabels({}); // TODO: Adapt to use your actual default value
+    setLabels({}); 
 }
 
 QString Container::state() const
@@ -165,7 +165,7 @@ void Container::setState(const QString &newState)
 
 void Container::resetState()
 {
-    setState({}); // TODO: Adapt to use your actual default value
+    setState({}); 
 }
 
 QString Container::status() const
@@ -183,7 +183,7 @@ void Container::setStatus(const QString &newStatus)
 
 void Container::resetStatus()
 {
-    setStatus({}); // TODO: Adapt to use your actual default value
+    setStatus({}); 
 }
 
 QVariantHash Container::hostConfig() const
@@ -201,7 +201,7 @@ void Container::setHostConfig(const QVariantHash &newHostConfig)
 
 void Container::resetHostConfig()
 {
-    setHostConfig({}); // TODO: Adapt to use your actual default value
+    setHostConfig({}); 
 }
 
 QVariantHash Container::networkSettings() const
@@ -219,7 +219,7 @@ void Container::setNetworkSettings(const QVariantHash &newNetworkSettings)
 
 void Container::resetNetworkSettings()
 {
-    setNetworkSettings({}); // TODO: Adapt to use your actual default value
+    setNetworkSettings({}); 
 }
 
 QVariantList Container::mounts() const
@@ -237,7 +237,7 @@ void Container::setMounts(const QVariantList &newMounts)
 
 void Container::resetMounts()
 {
-    setMounts({}); // TODO: Adapt to use your actual default value
+    setMounts({}); 
 }
 
 }
